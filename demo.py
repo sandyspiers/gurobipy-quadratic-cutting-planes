@@ -2,7 +2,7 @@ import numpy as np
 
 import gurobipy as gp
 
-from cutting_planes import ecp_solve, oa_solve
+from cutting_planes import ecp_solve, oa_solve, quad_solve
 
 # # Solve a random boolean quadratic problem, using continuous and binary vars
 # Generate problem
@@ -20,11 +20,15 @@ x = [mdl.addVar(ub=1) for _ in range(n)]
 mdl.addConstr(sum(x) == m)
 mdl.setParam("OutputFlag", 0)
 
-ecp_solve(Q, p, x, mdl)
+quad = quad_solve(Q, p, x, mdl).ObjVal
+ecp = ecp_solve(Q, p, x, mdl).ObjVal
+print(f"ECP:{ecp}\tQUAD:{quad}")
 
 # # Demo outer approximation on binary model
 mdl = gp.Model()
 x = [mdl.addVar(vtype=gp.GRB.BINARY) for _ in range(n)]
 mdl.addConstr(sum(x) == m)
 
-oa_solve(Q, p, x, mdl)
+quad = quad_solve(Q, p, x, mdl).ObjVal
+oa = oa_solve(Q, p, x, mdl).ObjVal
+print(f"OA:{oa}\tQUAD:{quad}")
