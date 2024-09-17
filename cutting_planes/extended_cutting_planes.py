@@ -52,8 +52,8 @@ def ecp_solve(
 
         # get solution
         y = np.array([_x.X for _x in x])
-        fy = y.T @ Q @ y / 2
-        dfy = Q @ y
+        fy = y.T @ Q @ y
+        dfy = 2 * Q @ y
 
         # update bounds
         LB = max(LB, float(fy + p @ y))

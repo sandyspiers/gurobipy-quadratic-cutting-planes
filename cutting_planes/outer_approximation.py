@@ -16,8 +16,8 @@ def oa_callback(model, where):
 
         # Get solution
         y = np.array(model.cbGetSolution(x))
-        fy = y.T @ Q @ y / 2
-        dfy = Q @ y
+        fy = y.T @ Q @ y
+        dfy = 2 * Q @ y
 
         # add cut
         model.cbLazy(theta <= fy + sum(dfy[i] * (x[i] - y[i]) for i in range(n)))
