@@ -28,7 +28,10 @@ def ecp_solve(
      - mdl (gp.Model) : The model associated with variables `x`
 
     Returns:
-     - mdl or Nothing.
+     - mdl
+
+    Raises:
+     - Exception : If for whatever reason the model does not solve at *any* step.
     """
     n = len(p)
     # Add epigraph values and objective
@@ -44,6 +47,7 @@ def ecp_solve(
     while gap > rel_tol and UB - LB >= abs_tol and iteration < MAX_ITERATION:
         mdl.optimize()
         if mdl.status != gp.GRB.OPTIMAL:
+            # TODO: Add better exception handelling
             raise Exception("Something went wrong, model did not solve")
 
         # get solution
