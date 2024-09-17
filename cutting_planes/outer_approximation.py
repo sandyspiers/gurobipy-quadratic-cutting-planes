@@ -67,4 +67,8 @@ def oa_solve(
     mdl.Params.LazyConstraints = 1
     mdl.optimize(oa_callback)
 
+    if mdl.status != gp.GRB.OPTIMAL:
+        # TODO: Add better exception handelling
+        raise Exception("Something went wrong, model did not solve")
+
     return mdl
